@@ -35,14 +35,11 @@ app.post('/spec/auth/success', async (req, res) => {
         return res.json({ message: 'Invalid payload' })
     }
 
-    /*
+    // (1) Save the user and its DID to your database however you like.
 
-    (1) Save the user and its DID to your database however you like.
-
-    (2) Format the "user" that you want returned to the client.
-
-        *NOTE* The user object you return NEEDS to either have "user.id" or "user.address" set as its address.
-    */
+    // (2) Format the "user" that you want returned to the client.
+    // *NOTE* The user object you return NEEDS to either have "user.id" or "user.address" set as its address.
+    user.foo = 'bar'
 
     const respData = {
         user
