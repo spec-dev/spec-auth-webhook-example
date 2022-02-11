@@ -41,7 +41,7 @@ app.post('/spec/auth/success', async (req, res) => {
 
     (2) Format the "user" that you want returned to the client.
 
-        - *NOTE* The user object you return NEEDS to either have "user.id" or "user.address" set to its address.
+        *NOTE* The user object you return NEEDS to either have "user.id" or "user.address" set as its address.
     */
 
     const respData = {
