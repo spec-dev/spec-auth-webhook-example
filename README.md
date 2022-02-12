@@ -6,15 +6,15 @@ This is an example Node.js server (express app) demonstrating how to use the Spe
 
 1) Clone this repository
 
-```
-$ git clone https://github.com/spec-dev/spec-auth-webhook-example && cd spec-auth-webhook-example
-```
+    ```
+    $ git clone https://github.com/spec-dev/spec-auth-webhook-example && cd spec-auth-webhook-example
+    ```
 
 2) Install dependencies
 
-```
-$ npm install
-```
+    ```
+    $ npm install
+    ```
 
 3) Using your preferred method, ensure the following environment variables are set.
 
@@ -32,7 +32,7 @@ $ npm start
 
 ## Overview
 
-This is a basic Node.js express server (`app.js`) that contains the following routes:
+This is a basic Node.js express server ([`app.js`](app.js)) that contains the following routes:
 
 ### Route 1 - Auth Webhook
 
