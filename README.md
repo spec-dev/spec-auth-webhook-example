@@ -34,9 +34,9 @@ $ npm start
 
 This is a basic Node.js express server ([`app.js`](app.js)) that contains the following routes:
 
-### Route 1 - Auth Webhook
+### Route 1 - The Auth Webhook
 
-This route handles a webhook sent from your Spec auth server during the sign-in verification process.
+This route handles the webhook sent from your Spec auth server during the sign-in verification process.
 
 The webhook is sent *after* signature verification has completed (and the user's DID profile has been resolved) but *before* responding to the client. This webhook allows developers to use their own database for user management while still relying on Spec to handle the auth process. More specifically, it gives developers way to customize the user
 object returned to the client in  following function call:
