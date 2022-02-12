@@ -114,11 +114,11 @@ Responding to this request with an error status code will cause the user's sign-
 
 The body of your response should always be a JSON object, but that object's contents depends on what you wish to do with the hook:
 
-1) First Option -- You do *NOT* want to overwrite the user object returned to the client.
+1) **First Option** -- You do *NOT* want to overwrite the user object returned to the client.
 
     In this case, your response body should simply be an empty JSON object `{}`.
 
-2) Second Option -- You *DO* want to overwrite the user object returned to the client.
+2) **Second Option** -- You *DO* want to overwrite the user object returned to the client.
 
     In this case, your response body should be a JSON object with a `user` property representing your own user data.
 
@@ -136,8 +136,9 @@ The body of your response should always be a JSON object, but that object's cont
 
 ### Route 2 - Route Requiring User Auth
 
-This route demonstrates how you can authorize a user request using that user's Spec auth header (JWT).
-After the user has signed-in with Spec on the client, their active session is stored in `localStorage`. That session's `access_token` is a JWT that is sent along with all requests to Spec in the `Authorization` request header. This JWT
+This route demonstrates how you can authorize a user's request using their Spec auth header (JWT).
+
+After the user has signed-in with Spec, their active session is stored in `localStorage`. That session's `access_token` is a JWT that is sent along with all requests to Spec in the `Authorization` request header. This JWT
 can be used in the same manner when making calls to your own API.
 
 Client side, you can use the following function to access this JWT as a formatted request header:
@@ -159,6 +160,8 @@ app.get('/my-route', async (req, res) => {
         res.statusCode = 401
         return res.json({ message: 'Unauthorized request' })
     }
+
+    // Presumably find your user record with this address...
 ```
 
 If the JWT isn't provided, is invalid, is expired, or the user's address simply doesn't exist in the JWT claims, then
@@ -168,41 +171,41 @@ the `userAddress` value above will be `null`.
 
 Spec auth is great, but how does the webhook work when building and testing your app locally? Great question.
 
-To integrate the Spec auth webhook with local development...
+To integrate the Spec auth webhook with local development, perform the following 2 steps:
 
-1) Make sure your app is pointed to your Spec project that's dedicated for local development (this Spec project will not have an auth webhook url configured).
+1) Make sure your app is pointed to your Spec project dedicated for local development (this Spec project shouldn't have an auth webhook url configured).
 
 2) Add the following configuration options when initializing your Spec client:
-```javascript
-import { createClient } from '@spec.dev/client'
+    ```javascript
+    import { createClient } from '@spec.dev/client'
 
-const specUrl = process.env.REACT_APP_SPEC_URL
-const specKey = process.env.REACT_APP_SPEC_KEY
+    const specUrl = process.env.REACT_APP_SPEC_URL
+    const specKey = process.env.REACT_APP_SPEC_KEY
 
-// Create Spec Client.
-export const spec = createClient(specUrl, specKey, {
-    localDev: true,
-    localApiKey: 'your-spec-api-key', // The `SPEC_API_KEY` env var you configured earlier
-    localAuthHook: 'your-local-auth-webhook-url', // Ex: http://localhost:3000/spec/auth/success
-})
-```
+    // Create Spec Client.
+    export const spec = createClient(specUrl, specKey, {
+        localDev: true,
+        localApiKey: 'your-spec-api-key', // The `SPEC_API_KEY` env var you configured earlier
+        localAuthHook: 'your-local-auth-webhook-url', // Ex: http://localhost:3000/spec/auth/success
+    })
+    ```
 
-**NOTE:** The `localApiKey` above should **NEVER* be published or used in the client outside of local development.
+    **NOTE:** The `localApiKey` above should *NEVER* be published or used on the client outside of local development.
 
-A better way of configuring the above would be to use environment variables. This way, you can ensure your `localApiKey` is only ever set during local development.
+    A better way of configuring the above would be to use environment variables. This way, you can ensure your `localApiKey` is only ever set during local development.
 
-```javascript
-// ...
+    ```javascript
+    // ...
 
-// Create Spec Client.
-export const spec = createClient(specUrl, specKey, {
-    localDev: process.env.REACT_APP_IS_LOCAL_DEV,
-    localApiKey: process.env.REACT_APP_LOCAL_API_KEY, // Don't set this outside of your local dev environment
-    localAuthHook: process.env.REACT_APP_LOCAL_AUTH_HOOK,
-})
-```
+    // Create Spec Client.
+    export const spec = createClient(specUrl, specKey, {
+        localDev: process.env.REACT_APP_IS_LOCAL_DEV,
+        localApiKey: process.env.REACT_APP_LOCAL_API_KEY, // Don't set this outside of your local dev environment
+        localAuthHook: process.env.REACT_APP_LOCAL_AUTH_HOOK,
+    })
+    ```
 
-Once your Spec client is configured for local development (per above), the auth webhook will be run client side and hit the `localAuthHook` url before the auth flow completes.
+Once your Spec client is configured for local development (per above), the auth webhook will be run client side before the auth flow completes.
 
 ## License
 
