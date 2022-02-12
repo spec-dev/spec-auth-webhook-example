@@ -1,10 +1,10 @@
 # Spec Auth Webhook Example
 
-Example Node.js server using the Spec auth webhook to manage users and DIDs.
+This is an example Node.js server (express app) demonstrating how to use the Spec auth webhook to customize the Spec user sign-in flow.
 
 ## Setup
 
-1) Clone this repo
+1) Clone this repository
 
 ```
 $ git clone https://github.com/spec-dev/spec-auth-webhook-example && cd spec-auth-webhook-example
@@ -18,7 +18,7 @@ $ npm install
 
 3) Using your preferred method, ensure the following environment variables are set.
 
-- `SPEC_API_KEY`: This is the API key used to authorize server-side requests from Spec. This is NOT your public anon key or your service-role key.
+- `SPEC_API_KEY`: This is the API key used to authorize server-side requests from Spec. This is NOT your public anon key *or* your service-role key.
 
 - `SPEC_JWT_SECRET`: The JWT secret for your spec project.
 
@@ -32,34 +32,33 @@ $ npm start
 
 ## Overview
 
-This is a super basic Node.js express server (`app.js`) that contains the following routes:
+This is a basic Node.js express server (`app.js`) that contains the following routes:
 
 ### Auth Webhook Route
 
 This route handles a webhook sent from your Spec auth server during the sign-in verification process.
 
-The webhook is immediately sent *after* signature verification has completed and the user's DID profile has been resolved, but *before* that request responds to the client. This webhook allows developers to use their own database for user management while still relying on Spec to manage the auth process. More specifically, it gives developers way to customize the user
+The webhook is sent *after* signature verification has completed (and the user's DID profile has been resolved) but *before* responding to the client. This webhook allows developers to use their own database for user management while still relying on Spec to handle the auth process. More specifically, it gives developers way to customize the user
 object returned to the client in  following function call:
 
 ```javascript
 const { user } = spec.auth.connect()
 ```
 
-**Method**
+#### Request Method
 
 `POST`
 
-**Path**
+#### Request Path
 
-Completely configurable (example uses `/spec/auth/success`), just make sure your Spec auth server has been configured
-to your webhook url.
+This is completely configurable (this example uses `/spec/auth/success`), just make sure your Spec auth server has been configured to use your webhook url.
 
-**Authentication**
+#### Authentication
 
-In order to verify this request came from your Spec auth server, it should be authenticated using your `SPEC_API_KEY` environment variable. This key will be set in the `Spec-Api-Key` request header.
+In order to verify the request was sent from your Spec auth server, it should be authenticated using your `SPEC_API_KEY` environment variable. This value should match the `Spec-Api-Key` header value on any incoming requests.
 
 Luckily, as long as your `SPEC_API_KEY` environment variable is set, you can utilize the `authSpecWebhook` helper
-function from the `@spec.dev/auth` library to authorize this request super easily:
+function from the `@spec.dev/auth` library to easily authorize this request.
 
 ```javascript
 app.post('/spec/auth/success', async (req, res) => {
@@ -70,11 +69,11 @@ app.post('/spec/auth/success', async (req, res) => {
     ...
 ```
 
-**Payload**
+#### Payload
 
-The payload for this request is always a JSON object with a `user` in it.
+The incoming request payload is a JSON object with a `user` in it.
 
-Example of payloads sent to this route:
+Example payloads:
 
 a) User with an ENS DID:
 ```javascript
@@ -95,7 +94,7 @@ a) User with an ENS DID:
 }
 ```
 
-b) User without a DID
+b) User without a DID:
 ```javascript
 {
     "user": {
@@ -105,23 +104,25 @@ b) User without a DID
 }
 ```
 
-**Response**
+#### Response
 
-*Status*
-Responding to this request with an error status code *will* cause the user's sign-in request to fail, so keep that in mind.
+**Reponse Status**
 
-*Body*
+Responding to this request with an error status code will cause the user's sign-in request to fail, so keep that in mind.
+
+**Reponse Body**
+
 The body of your response depends on what you wish to do with this hook:
 
-1) Use-case #1: You do NOT want to overwrite the user object returned to the client.
+1) First Option -- You do *NOT* want to overwrite the user object returned to the client.
 
     In this case, your response should simply be an empty JSON object `{}`.
 
-2) Use-case #2: You DO want to overwrite the user object returned to the client.
+2) Second Option -- You *DO* want to overwrite the user object returned to the client.
 
     Your response should be a JSON object with a `user` property representing your own user data.
 
-    **NOTE** If you choose to overwrite the user object, **make sure that either `user.id` or `user.address` is set to that user's address.
+    **NOTE** If you choose to overwrite the user object, **make sure that either `user.id` or `user.address` is set to that user's address.** This is required.
 
     Example response:
     ```javascript
