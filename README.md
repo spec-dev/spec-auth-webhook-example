@@ -192,7 +192,7 @@ To integrate the Spec auth webhook with local development, perform the following
     })
     ```
 
-    **NOTE:** The `localApiKey` above should *NEVER* be published or used on the client outside of local development.
+    **NOTE:** The `localApiKey` above should *NEVER* be published or used on the client outside of local development. This key is meant to be kept secret and technically only used server-side.
 
     A better way of configuring the above would be to use environment variables. This way, you can ensure your `localApiKey` is only ever set during local development.
 
