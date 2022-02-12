@@ -178,6 +178,7 @@ To integrate the Spec auth webhook with local development, perform the following
 1) Make sure your app is pointed to your Spec project dedicated for local development (this Spec project shouldn't have an auth webhook url configured).
 
 2) Add the following configuration options when initializing your Spec client:
+
     ```javascript
     import { createClient } from '@spec.dev/client'
 
@@ -206,6 +207,30 @@ To integrate the Spec auth webhook with local development, perform the following
         localAuthHook: process.env.REACT_APP_LOCAL_AUTH_HOOK,
     })
     ```
+
+    Or you could get fancy:
+
+    ```javascript
+    const buildSpecOptions = () => {
+        let options = {}
+
+        // Only add local config if in local dev.
+        const isLocalDev = process.env.REACT_APP_IS_LOCAL_DEV
+        if (isLocalDev) {
+            options = { ...options, {
+                localDev: true,
+                localApiKey: process.env.REACT_APP_LOCAL_API_KEY,
+                localAuthHook: process.env.REACT_APP_LOCAL_AUTH_HOOK,
+            }}
+        }
+
+        return options
+    }
+
+    // Create Spec Client.
+    export const spec = createClient(specUrl, specKey, buildSpecOptions())
+    ```
+
 
 Once your Spec client is configured for local development (per above), the auth webhook will be run client side before the auth flow completes.
 
