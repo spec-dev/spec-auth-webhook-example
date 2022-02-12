@@ -6,15 +6,15 @@ This is an example Node.js server (express app) demonstrating how to use the Spe
 
 1) Clone this repository
 
-    ```
-    $ git clone https://github.com/spec-dev/spec-auth-webhook-example && cd spec-auth-webhook-example
-    ```
+```
+$ git clone https://github.com/spec-dev/spec-auth-webhook-example && cd spec-auth-webhook-example
+```
 
 2) Install dependencies
 
-    ```
-    $ npm install
-    ```
+```
+$ npm install
+```
 
 3) Using your preferred method, ensure the following environment variables are set.
 
@@ -42,7 +42,7 @@ The webhook is sent *after* signature verification has completed (and the user's
 object returned to the client in  following function call:
 
 ```javascript
-const { user } = spec.auth.connect()
+const { user } = await spec.auth.connect()
 ```
 
 #### Request Method
@@ -136,7 +136,7 @@ The body of your response should always be a JSON object, but that object's cont
 
 ### Route 2 - Route Requiring User Auth
 
-`GET /my-route` within `app.js`
+`GET /my-route` within [`app.js`](app.js)
 
 This route demonstrates how you can authorize a user's request using their Spec auth header (JWT).
 
