@@ -38,7 +38,12 @@ This is a super basic Node.js express server (`app.js`) that contains the follow
 
 This route handles a webhook sent from your Spec auth server during the sign-in verification process.
 
-The webhook is immediately sent *after* signature verification has completed and the user's DID profile has been resolved, but *before* that request responds to the client. This webhook allows developers to use their own database for user management while still relying on Spec to manage the auth process.
+The webhook is immediately sent *after* signature verification has completed and the user's DID profile has been resolved, but *before* that request responds to the client. This webhook allows developers to use their own database for user management while still relying on Spec to manage the auth process. More specifically, it gives developers way to customize the user
+object returned to the client in  following function call:
+
+```javascript
+const { user } = spec.auth.connect()
+```
 
 **Method**
 
