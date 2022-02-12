@@ -136,6 +136,8 @@ The body of your response should always be a JSON object, but that object's cont
 
 ### Route 2 - Route Requiring User Auth
 
+`GET /my-route` within `app.js`
+
 This route demonstrates how you can authorize a user's request using their Spec auth header (JWT).
 
 After the user has signed-in with Spec, their active session is stored in `localStorage`. That session's `access_token` is a JWT that is sent along with all requests to Spec in the `Authorization` request header. This JWT
