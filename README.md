@@ -84,13 +84,11 @@ a) User with an ENS DID:
         "id": "0xba1D3fd5a923C6Bf543CB4Cd0712C096e39DaFA2",
         "did": {
             "domain": "vitalik.eth",
-            "textRecords": {
-                "email": null,
-                "url": "https://vitalik.ca",
-                "avatar": "https://ipfs.io/ipfs/QmSP4nq9fnN9dAiCj42ug9Wa79rqmQerZXZch82VqpiH7U/image.gif",
-                "name": null,
-                "description": null
-            }
+            "email": null,
+            "url": "https://vitalik.ca",
+            "avatar": "https://ipfs.io/ipfs/QmSP4nq9fnN9dAiCj42ug9Wa79rqmQerZXZch82VqpiH7U/image.gif",
+            "name": null,
+            "description": null
         }
     }
 }
